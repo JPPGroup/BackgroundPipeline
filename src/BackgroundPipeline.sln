@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackgroundPipeline", "Backg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackgroundPipeline.UI.Razor", "BackgroundPipeline.UI.Razor\BackgroundPipeline.UI.Razor.csproj", "{7A630770-D41D-4B1C-8E1C-DA9817B33927}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundPipeline.UI.Razor.Test", "..\BackgroundPipeline.UI.Razor.Test\BackgroundPipeline.UI.Razor.Test.csproj", "{84355019-7A86-4F25-9030-DD166762830B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundPipeline.UI.Razor.Test", "BackgroundPipeline.UI.Razor.Test\BackgroundPipeline.UI.Razor.Test.csproj", "{84355019-7A86-4F25-9030-DD166762830B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
