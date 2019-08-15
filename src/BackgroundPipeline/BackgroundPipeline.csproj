@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Jpp.BackgroundPipeline</RootNamespace>
+    <Nullable>enable</Nullable>
+    <LangVersion>8.0</LangVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Jpp.BackgroundPipeline</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>JPP Consulting</Authors>
+    <Company />
+    <Product>Background Pipeline</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Jpp.Common" Version="0.3.7" />
+    <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.1.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.4.33" />
+    <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
+      <HintPath>..\..\..\..\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.0.0-preview8.19405.7\ref\netcoreapp3.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

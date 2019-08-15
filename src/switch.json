@@ -1,0 +1,6 @@
+{
+  "solution": "BackgroundPipeline.sln",
+  "mappings": {
+    "Jpp.Common.Razor": "../../Common/src/Common.Razor/Common.Razor.csproj"
+  }
+}
