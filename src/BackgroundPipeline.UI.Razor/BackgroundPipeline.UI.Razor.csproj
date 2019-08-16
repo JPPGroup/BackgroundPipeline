@@ -14,4 +14,8 @@
     <None Include="wwwroot\Pipelinestyles.css" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BackgroundPipeline\BackgroundPipeline.csproj" />
+  </ItemGroup>
+
 </Project>

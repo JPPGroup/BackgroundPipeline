@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BackgroundPipeline.UI.Razor\BackgroundPipeline.UI.Razor.csproj" />
+    <ProjectReference Include="..\BackgroundPipeline\BackgroundPipeline.csproj" />
   </ItemGroup>
 
 </Project>

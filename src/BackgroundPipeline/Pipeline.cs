@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Jpp.BackgroundPipeline
 {
-    class Pipeline
+    public class Pipeline
     {
         public Guid ID { get; set; }
         public string Name { get; set; }

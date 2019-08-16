@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Jpp.BackgroundPipeline
 {
-    interface IPipelineStorage
+    public interface IPipelineStorage
     {
-        IEnumerable<Pipeline> GetAllPipelines();
+        Task<IEnumerable<Pipeline>> GetAllPipelines();
 
-        Pipeline GetPipeline(Guid id);
+        Task<Pipeline> GetPipeline(Guid id);
 
-        void SavePipeline(Guid id);
+        Task SavePipeline(Pipeline pipeline);
     }
 }

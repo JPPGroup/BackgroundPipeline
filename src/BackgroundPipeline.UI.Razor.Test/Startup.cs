@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BackgroundPipeline.UI.Razor.Test.Data;
+using Jpp.BackgroundPipeline;
 
 namespace BackgroundPipeline.UI.Razor.Test
 {
@@ -29,6 +30,8 @@ namespace BackgroundPipeline.UI.Razor.Test
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            services.AddSingleton<IPipelineStorage, MemoryPipelineStorage>();
+            services.AddSingleton<PipelineCoordinator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
