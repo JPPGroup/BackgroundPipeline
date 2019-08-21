@@ -1,14 +1,20 @@
-﻿using System;
+﻿using Jpp.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Jpp.BackgroundPipeline
 {
-    public class Pipeline
+    public class Pipeline : BaseNotify
     {
         public Guid ID { get; set; }
         public string Name { get; set; }
-        public Status Status { get; set; }
+        public Status Status {
+            get { return _status; }
+            set { SetField(ref _status, value, nameof(Status)); }
+        }
+
+        private Status _status;
 
         public DateTime RequiredDate { get; set; }
         public DateTime QueuedDate { get; set; }

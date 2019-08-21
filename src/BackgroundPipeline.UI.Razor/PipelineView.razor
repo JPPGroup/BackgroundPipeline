@@ -1,4 +1,11 @@
 ﻿@inherits PipelineViewBase
 
-<h3>@PipelineName</h3>
-<p>@Pipeline.Status</p>
+    <div>
+        <button class="collapsible-trigger" @onclick="ToggleCollapse">
+        <h3>@Pipeline.Name</h3>
+            <h6>@Pipeline.Status</h6>
+        </button>
+        <div class="collapsible-content @(Expanded ? "collapsible-active" : "collapsible-inactive")" style="max-height: @(MaxHeight)px; height: 300px; color: @(StatusColor)">            
+            <p>@Pipeline.Status</p>
+        </div>
+    </div>
