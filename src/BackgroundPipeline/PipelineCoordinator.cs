@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Jpp.BackgroundPipeline
 {
@@ -27,7 +28,16 @@ namespace Jpp.BackgroundPipeline
 
         public async Task QueuePipeline(Pipeline pipeline)
         {
+            pipeline.QueuedDate = DateTime.Now;
+            pipeline.Status = Status.Queued;
             await _pipelines.SavePipeline(pipeline);
+        }
+
+        public async Task<Pipeline> GetNextQueued()
+        {
+            IEnumerable<Pipeline> pipelines = await _pipelines.GetAllPipelines();
+            Pipeline nextPipeline = pipelines.Where(p => p.Status == Status.Queued).OrderByDescending(p => p.Priority).ThenByDescending(p => p.RequiredDate).ThenByDescending(p => p.QueuedDate).First();
+            return nextPipeline;
         }
     }
 }
