@@ -25,7 +25,7 @@ namespace Jpp.BackgroundPipeline.UI.Razor
 
         public string StatusColor { get; set; }
 
-        protected override async Task OnInitAsync()
+        protected override async Task OnInitializedAsync()
         {
             Pipeline = await _coordinator.GetPipelineAsync(PipelineID);
             Pipeline.PropertyChanged += Pipeline_PropertyChanged;

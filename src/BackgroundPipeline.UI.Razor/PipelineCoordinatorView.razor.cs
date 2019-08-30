@@ -13,7 +13,7 @@ namespace Jpp.BackgroundPipeline.UI.Razor
                 
         public IEnumerable<Pipeline> Pipelines { get; set; }
 
-        protected override async Task OnInitAsync()
+        protected override async Task OnInitializedAsync()
         {
             Pipelines = await _coordinator.GetAllPipelinesAsync();
         }
