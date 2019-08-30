@@ -1,23 +1,16 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Jpp.BackgroundPipeline.Stages;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jpp.BackgroundPipeline.UI.Razor
+namespace Jpp.BackgroundPipeline.UI.Razor.Stages
 {
-    public class PipelineViewBase : ComponentBase
+    public class ConfirmationStageViewBase : ComponentBase
     {
-        [Inject]
-        protected PipelineCoordinator _coordinator { get; set; }
-
         [Parameter]
-        public Guid PipelineID { get; set; }
-
-        [Parameter]
-        public Pipeline Pipeline { get; set; }
-
-        public string PipelineName { get; set; } = "Test Name";
+        public ConfirmationStage Stage { get; set; }
 
         public bool Expanded { get; set; }
 
@@ -25,15 +18,19 @@ namespace Jpp.BackgroundPipeline.UI.Razor
 
         public string StatusColor { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        public void Confirm()
         {
-            Pipeline = await _coordinator.GetPipelineAsync(PipelineID);
-            Pipeline.PropertyChanged += Pipeline_PropertyChanged;
+            Stage.Confirmed = true;
+        }
+
+        protected override async Task OnInitializedAsync()
+        {            
+            Stage.PropertyChanged += Pipeline_PropertyChanged;
         }
 
         private void Pipeline_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            switch(Pipeline.Status)
+            switch (Stage.Status)
             {
                 case Status.Completed:
                 case Status.Running:
@@ -58,7 +55,7 @@ namespace Jpp.BackgroundPipeline.UI.Razor
         protected void ToggleCollapse()
         {
             Expanded = !Expanded;
-            MaxHeight = Expanded ? 300 : 0;
+            MaxHeight = Expanded ? 100 : 0;
         }
     }
 }

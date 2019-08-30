@@ -1,0 +1,12 @@
+﻿@inherits ConfirmationStageViewBase
+
+<button class="collapsible-trigger" @onclick="ToggleCollapse" style="background-color: @(StatusColor);">
+    <h3 class="pipeline-h3">@Stage.StageName</h3>
+    <h6 class="pipeline-h6">@Stage.Status</h6>
+</button>
+<div class="collapsible-child-content @(Expanded ? "collapsible-active" : "collapsible-inactive")" style="max-height: @(MaxHeight)px; height: 300px;)">
+
+
+    <button @onclick="Confirm">Proceed</button>
+    </div>
+

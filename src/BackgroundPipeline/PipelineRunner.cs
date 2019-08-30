@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Jpp.BackgroundPipeline
 {
-    class PipelineRunner : BackgroundService
+    public class PipelineRunner : BackgroundService
     {
         PipelineCoordinator _pipelineCoordinator;
 
@@ -21,11 +21,27 @@ namespace Jpp.BackgroundPipeline
             while (!stoppingToken.IsCancellationRequested)
             {
                 Pipeline pipe = await _pipelineCoordinator.GetNextQueued();
+                pipe.Status = Status.Running;                
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     if (pipe.Status == Status.Running)
                     {
-                        pipe.CurrentStage.Run();
+                        await pipe.CurrentStage.Run();
+                        
+                        switch (pipe.CurrentStage.Status)
+                        {
+                            case Status.Completed:
+                                AdvanceStage(pipe);
+                                break;
+
+                            case Status.Error:
+                                pipe.Status = Status.Error;
+                                break;
+
+                            case Status.InputRequired:
+                                pipe.Status = Status.InputRequired;
+                                break;
+                        }
                     }
                     else
                     {
@@ -33,6 +49,20 @@ namespace Jpp.BackgroundPipeline
                     }
                 }
             }
+        }
+
+        private void AdvanceStage(Pipeline pipe)
+        {
+            if(pipe.CurrentStage.NextStageID != Guid.Empty)
+            {
+                pipe.CurrentStageID = pipe.CurrentStage.NextStageID;
+
+            } else
+            {
+                pipe.Status = Status.Completed;
+            }
+
+            pipe.LastAdvanced = DateTime.Now;
         }
     }
 }

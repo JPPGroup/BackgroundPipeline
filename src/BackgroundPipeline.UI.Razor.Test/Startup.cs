@@ -32,6 +32,7 @@ namespace BackgroundPipeline.UI.Razor.Test
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<IPipelineStorage, MemoryPipelineStorage>();
             services.AddSingleton<PipelineCoordinator>();
+            services.AddHostedService<PipelineRunner>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

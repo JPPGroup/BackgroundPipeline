@@ -1,6 +1,7 @@
 ﻿using Jpp.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Jpp.BackgroundPipeline
@@ -18,12 +19,40 @@ namespace Jpp.BackgroundPipeline
 
         public DateTime RequiredDate { get; set; }
         public DateTime QueuedDate { get; set; }
-        public Status LastAdvanced { get; set; }
+        public DateTime LastAdvanced { get; set; }
 
         public Priority Priority { get; set; }
 
-        public Guid CurrentStageID { get; set; }
-        public virtual PipelineStage CurrentStage { get; set; }
+        public Guid CurrentStageID 
+        {
+            get
+            {
+                return _currentStageID;
+            }
+            set
+            {
+                if(Stages.Where(ps => ps.ID == value).Count() > 0)
+                {
+                    _currentStageID = value;
+                } else
+                {
+                    throw new ArgumentOutOfRangeException("Stage ID is not recognised");
+                }
+            }
+        }
+
+        private Guid _currentStageID;
+        public virtual PipelineStage CurrentStage 
+        { 
+            get
+            {
+                return Stages.Where(ps => ps.ID == CurrentStageID).First();
+            }
+            set
+            {
+                CurrentStageID = value.ID;
+            }
+        }               
 
         public virtual ICollection<PipelineStage> Stages { get; set; }
     }
@@ -34,7 +63,9 @@ namespace Jpp.BackgroundPipeline
         Running,
         Paused,
         Stopped,
-        Completed
+        Completed,
+        InputRequired,
+        Error
     }
 
     public enum Priority

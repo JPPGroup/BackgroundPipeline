@@ -8,6 +8,8 @@ namespace Jpp.BackgroundPipeline
 {
     public class PipelineCoordinator
     {
+        public int MillisecondsDelay { get; set; } = 1000;
+
         private IPipelineStorage _pipelines;
 
         public PipelineCoordinator(IPipelineStorage storage)
@@ -36,7 +38,21 @@ namespace Jpp.BackgroundPipeline
         public async Task<Pipeline> GetNextQueued()
         {
             IEnumerable<Pipeline> pipelines = await _pipelines.GetAllPipelines();
-            Pipeline nextPipeline = pipelines.Where(p => p.Status == Status.Queued).OrderByDescending(p => p.Priority).ThenByDescending(p => p.RequiredDate).ThenByDescending(p => p.QueuedDate).First();
+            while (pipelines.Count() < 1)
+            {
+                await Task.Delay(MillisecondsDelay);
+                pipelines = await _pipelines.GetAllPipelines();
+            }
+
+            var queue = pipelines.Where(p => p.Status == Status.Queued).OrderByDescending(p => p.Priority).ThenByDescending(p => p.RequiredDate).ThenByDescending(p => p.QueuedDate);
+
+            while(queue.Count() < 1)
+            {
+                await Task.Delay(MillisecondsDelay);
+                queue = pipelines.Where(p => p.Status == Status.Queued).OrderByDescending(p => p.Priority).ThenByDescending(p => p.RequiredDate).ThenByDescending(p => p.QueuedDate);
+            }
+
+            Pipeline nextPipeline = queue.First();
             return nextPipeline;
         }
     }
