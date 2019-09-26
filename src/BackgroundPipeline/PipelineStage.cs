@@ -1,6 +1,8 @@
 ﻿using Jpp.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,7 +10,8 @@ namespace Jpp.BackgroundPipeline
 {
     public abstract class PipelineStage : BaseNotify
     {
-        public Guid ID { get; set; }
+        [Key]
+        public Guid ID { get; set; } = Guid.NewGuid();
         public string StageName { get; set; }
         public Status Status
         {

@@ -1,6 +1,9 @@
 ﻿using Jpp.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 
@@ -8,6 +11,7 @@ namespace Jpp.BackgroundPipeline
 {
     public class Pipeline : BaseNotify
     {
+        [Key]
         public Guid ID { get; set; }
         public string Name { get; set; }
         public Status Status {
@@ -42,6 +46,7 @@ namespace Jpp.BackgroundPipeline
         }
 
         private Guid _currentStageID;
+        [NotMapped]
         public virtual PipelineStage CurrentStage 
         { 
             get
@@ -54,7 +59,13 @@ namespace Jpp.BackgroundPipeline
             }
         }               
 
-        public virtual ICollection<PipelineStage> Stages { get; set; }
+        public virtual ICollection<PipelineStage> Stages { get; set; }    
+        
+        public Pipeline()
+        {
+            ID = Guid.NewGuid();
+            Stages = new List<PipelineStage>();
+        }
     }
 
     public enum Status

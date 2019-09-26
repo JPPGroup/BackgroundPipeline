@@ -19,21 +19,29 @@ namespace Jpp.BackgroundPipeline.UI.Razor
 
         public string PipelineName { get; set; } = "Test Name";
 
-        public bool Expanded { get; set; }
-
-        public int MaxHeight { get; set; }
-
         public string StatusColor { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             Pipeline = await _coordinator.GetPipelineAsync(PipelineID);
             Pipeline.PropertyChanged += Pipeline_PropertyChanged;
+
+            UpdateDisplay();
         }
 
         private void Pipeline_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            switch(Pipeline.Status)
+            UpdateDisplay();
+
+            InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        }
+
+        private void UpdateDisplay()
+        {
+            switch (Pipeline.Status)
             {
                 case Status.Completed:
                 case Status.Running:
@@ -48,17 +56,6 @@ namespace Jpp.BackgroundPipeline.UI.Razor
                     StatusColor = "#efa649";
                     break;
             }
-
-            InvokeAsync(() =>
-            {
-                StateHasChanged();
-            });
-        }
-
-        protected void ToggleCollapse()
-        {
-            Expanded = !Expanded;
-            MaxHeight = Expanded ? 300 : 0;
         }
     }
 }

@@ -55,7 +55,7 @@ namespace Jpp.BackgroundPipeline.UI.Razor.Stages
         protected void ToggleCollapse()
         {
             Expanded = !Expanded;
-            MaxHeight = Expanded ? 100 : 0;
+            MaxHeight = Expanded ? 450 : 0;
         }
     }
 }

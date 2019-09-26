@@ -39,7 +39,7 @@ namespace Jpp.BackgroundPipeline.UI.Razor
             cs2.Pipeline = p;
             cs2.NextStageID = cs3.ID;
 
-            ConfirmationStage cs = new ConfirmationStage();
+            FileUploadStage cs = new FileUploadStage();
             cs.ID = Guid.NewGuid();
             cs.PiplelineID = p.ID;
             cs.Pipeline = p;

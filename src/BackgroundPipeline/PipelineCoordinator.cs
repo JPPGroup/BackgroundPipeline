@@ -8,7 +8,7 @@ namespace Jpp.BackgroundPipeline
 {
     public class PipelineCoordinator
     {
-        public int MillisecondsDelay { get; set; } = 1000;
+        public int MillisecondsDelay { get; set; } = 10000; //TODO: CHange to something reasonable for production
 
         private IPipelineStorage _pipelines;
 
@@ -23,8 +23,7 @@ namespace Jpp.BackgroundPipeline
         }
 
         public async Task<IEnumerable<Pipeline>> GetAllPipelinesAsync()
-        {
-            await Task.Delay(3000);
+        {            
             return await _pipelines.GetAllPipelines();
         }
 

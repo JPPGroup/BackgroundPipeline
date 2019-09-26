@@ -36,7 +36,7 @@
 .collapsible-child-content {
     padding: 0 18px;
     background-color: #d8d8d8;
-    overflow: hidden;
+    overflow: auto;
     transition: max-height 0.5s ease-in;
 }
 

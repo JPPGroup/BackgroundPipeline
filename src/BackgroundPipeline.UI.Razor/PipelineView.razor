@@ -2,36 +2,59 @@
 @using Jpp.BackgroundPipeline.Stages
 @using Jpp.BackgroundPipeline.UI.Razor.Stages
 
-<div>
-    <button class="collapsible-trigger" @onclick="ToggleCollapse" style="background-color: @(StatusColor);">
+<Jpp.Common.Razor.Accordion HeaderStyle="@_headerStyle" MaxHeight="250">
+    <Header>
         <h3 class="pipeline-h3">@Pipeline.Name</h3>
         <h6 class="pipeline-h6">@Pipeline.Status</h6>
-    </button>
-    <div class="collapsible-content @(Expanded ? "collapsible-active" : "collapsible-inactive")" style="max-height: @(MaxHeight)px;)">
-        <div style="padding: 18px 0px">
-            Queued for processing at <b>@(String.Format("{0:HH:MM}", Pipeline.QueuedDate))</b> on <b>@(String.Format("{0:dddd, MMMM d, yyyy}", Pipeline.QueuedDate))</b><br />
-            @{
-                if (Pipeline.LastAdvanced == default(DateTime))
+    </Header>
+    <Content>
+        Queued for processing at
+        <b>@(String.Format("{0:HH:MM}", Pipeline.QueuedDate))</b> on
+        <b>@(String.Format("{0:dddd, MMMM d, yyyy}", Pipeline.QueuedDate))</b>
+        <br />
+        @{
+            if (Pipeline.LastAdvanced == default(DateTime))
+            {
+                <text>No stages have completed yet.
+                    <br />
+                </text>
+            }
+            else
+            {
+                <text>Last stage completed at
+                    <b>@(String.Format("{0:HH:MM}", Pipeline.LastAdvanced))</b> on the
+                    <b>@(String.Format("{0:dddd, MMMM d, yyyy}", Pipeline.LastAdvanced))</b>
+                    <br />
+                </text>
+            }
+        }
+        <br />
+        @{
+            foreach (PipelineStage stage in Pipeline.Stages.OrderByDescending(ps => ps.LastRun))
+            {
+                switch (stage)
                 {
-                    <text>No stages have completed yet.<br /></text>
-                }
-                else
-                {
-                    <text>Last stage completed at <b>@(String.Format("{0:HH:MM}", Pipeline.LastAdvanced))</b> on the <b>@(String.Format("{0:dddd, MMMM d, yyyy}", Pipeline.LastAdvanced))</b><br /></text>
+
+
+                    case FileUploadStage t2:
+                        <FileUploadStageView Stage="t2" />
+                        break;
+
+                    case ConfirmationStage t1:
+                        <ConfirmationStageView Stage="t1" />
+                        break;
                 }
             }
-            <br />
-            @{
-                foreach (PipelineStage stage in Pipeline.Stages)
-                {
-                    switch (stage)
-                    {
-                        case ConfirmationStage t1:
-                            <ConfirmationStageView Stage="t1" />
-                            break;
-                    }
-                }
-            }
-        </div>
-    </div>
-</div>
+        }
+    </Content>
+</Jpp.Common.Razor.Accordion>
+
+@code
+{
+    string _headerStyle;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _headerStyle = $"background-color: {StatusColor};";
+    }
+}

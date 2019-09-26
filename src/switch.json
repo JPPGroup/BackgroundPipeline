@@ -1,0 +1,17 @@
+{
+  "solution": "BackgroundPipeline.sln",
+  "mappings": {
+    "Jpp.Common.Razor": "../../Common/src/Common.Razor/Common.Razor.csproj"
+  },
+  "restore": [
+    {
+      "name": "BackgroundPipeline.UI.Razor",
+      "packages": [
+        {
+          "packageName": "Jpp.Common.Razor",
+          "version": "0.1.1"
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,5 @@
-﻿@inherits ConfirmationStageViewBase
+﻿@inherits FileUploadStageViewBase
+@using Jpp.Common.Razor;
 
 <button class="collapsible-trigger" @onclick="ToggleCollapse" style="background-color: @(StatusColor);">
     <h3 class="pipeline-h3">@Stage.StageName</h3>
@@ -6,7 +7,11 @@
 </button>
 <div class="collapsible-child-content @(Expanded ? "collapsible-active" : "collapsible-inactive")" style="max-height: @(MaxHeight)px;)">
     <div style="padding: 18px 0px">
-        <button @onclick="Confirm">Proceed</button>
+        <FileUpload OnUpload="UploadComplete"/>
+        <br />
+        <div hidden="@FileNotReady">
+            <button @onclick="Confirm">Proceed</button>
+        </div>
     </div>
 </div>
 
