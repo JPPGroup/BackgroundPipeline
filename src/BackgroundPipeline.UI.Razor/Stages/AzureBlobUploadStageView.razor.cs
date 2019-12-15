@@ -1,34 +1,25 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Jpp.BackgroundPipeline.Stages;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jpp.BackgroundPipeline.UI.Razor
+namespace Jpp.BackgroundPipeline.UI.Razor.Stages
 {
-    public class PipelineViewBase : ComponentBase
+    public class AzureBlobStorageUploadStageViewBase : ComponentBase
     {
-        [Inject]
-        protected PipelineCoordinator _coordinator { get; set; }
-
         [Parameter]
-        public Guid PipelineID { get; set; }
-
-        [Parameter]
-        public Pipeline Pipeline { get; set; }
-
-        [Parameter]
-        public bool Expanded { get; set; }
-
-        public string PipelineName { get; set; } = "Test Name";
+        public AzureBlobUploadStage Stage { get; set; }
 
         public string StatusColor { get; set; }
 
+        public int MaxChunks { get; set; }
+        public int CurrentChunk { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
-            Pipeline = await _coordinator.GetPipelineAsync(PipelineID);
-            Pipeline.PropertyChanged += Pipeline_PropertyChanged;
-
+            Stage.PropertyChanged += Pipeline_PropertyChanged;
             UpdateDisplay();
         }
 
@@ -49,9 +40,9 @@ namespace Jpp.BackgroundPipeline.UI.Razor
             });
         }
 
-        private void UpdateDisplay()
+        protected void UpdateDisplay()
         {
-            switch (Pipeline.Status)
+            switch (Stage.Status)
             {
                 case Status.Completed:
                 case Status.Running:
@@ -67,7 +58,8 @@ namespace Jpp.BackgroundPipeline.UI.Razor
                     break;
             }
 
-            _headerStyle = $"background-color: {StatusColor};";
+            MaxChunks = Stage.MaxChunks;
+            CurrentChunk = Stage.CurrentChunk;
         }
     }
 }

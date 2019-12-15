@@ -41,7 +41,6 @@ namespace Jpp.BackgroundPipeline.Stages
             {
                 return Status.InputRequired;
             }
-
         }
     }
 }

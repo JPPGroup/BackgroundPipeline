@@ -11,9 +11,12 @@ namespace Jpp.BackgroundPipeline.UI.Razor.Stages
     {
         public bool FileNotReady { get; set; } = true;
 
+
         public void UploadComplete(byte[] fileData)
         {
             FileNotReady = false;
+            (Stage as FileUploadStage).Data = fileData;
+            (Stage as FileUploadStage).Filename = Guid.NewGuid().ToString();
         }
     }
 }

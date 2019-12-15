@@ -1,5 +1,4 @@
-﻿@inherits FileUploadStageViewBase
-@using Jpp.Common.Razor;
+﻿@inherits AzureBlobStorageUploadStageViewBase
 
 <Jpp.Common.Razor.Accordion HeaderStyle="@_headerStyle" MaxHeight="250" Expanded="@(Stage.ID == Stage.Pipeline.CurrentStageID)">
     <Header>
@@ -7,11 +6,12 @@
         <h6 class="pipeline-h6">@Stage.Status</h6>
     </Header>
     <Content>
-        <FileUpload OnUpload="UploadComplete" />
-        <br />        
-        <div hidden="@FileNotReady">
-            <button @onclick="Confirm">Proceed</button>
-        </div>
+        <progress value="@CurrentChunk" max="@MaxChunks"/>
     </Content>
 </Jpp.Common.Razor.Accordion>
 
+@code {
+
+
+
+}

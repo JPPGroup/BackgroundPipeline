@@ -66,6 +66,9 @@ namespace Jpp.BackgroundPipeline
             ID = Guid.NewGuid();
             Stages = new List<PipelineStage>();
         }
+
+        [NotMapped]
+        public Dictionary<string, object> OutputCache { get; set; }
     }
 
     public enum Status

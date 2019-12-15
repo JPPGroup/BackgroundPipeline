@@ -30,18 +30,18 @@ namespace Jpp.BackgroundPipeline.UI.Razor
 
             ConfirmationStage cs3 = new ConfirmationStage();
             cs3.ID = Guid.NewGuid();
-            cs3.PiplelineID = p.ID;
+            cs3.PipelineID = p.ID;
             cs3.Pipeline = p;
 
             ConfirmationStage cs2 = new ConfirmationStage();
             cs2.ID = Guid.NewGuid();
-            cs2.PiplelineID = p.ID;
+            cs2.PipelineID = p.ID;
             cs2.Pipeline = p;
             cs2.NextStageID = cs3.ID;
 
             FileUploadStage cs = new FileUploadStage();
             cs.ID = Guid.NewGuid();
-            cs.PiplelineID = p.ID;
+            cs.PipelineID = p.ID;
             cs.Pipeline = p;
             cs.NextStageID = cs2.ID;
 

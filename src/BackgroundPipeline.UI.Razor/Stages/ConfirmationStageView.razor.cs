@@ -10,11 +10,7 @@ namespace Jpp.BackgroundPipeline.UI.Razor.Stages
     public class ConfirmationStageViewBase : ComponentBase
     {
         [Parameter]
-        public ConfirmationStage Stage { get; set; }
-
-        public bool Expanded { get; set; }
-
-        public int MaxHeight { get; set; }
+        public ConfirmationStage Stage { get; set; }        
 
         public string StatusColor { get; set; }
 
@@ -26,9 +22,27 @@ namespace Jpp.BackgroundPipeline.UI.Razor.Stages
         protected override async Task OnInitializedAsync()
         {            
             Stage.PropertyChanged += Pipeline_PropertyChanged;
+            UpdateDisplay();
+        }
+
+        protected string _headerStyle;
+
+        protected override async Task OnParametersSetAsync()
+        {
+            _headerStyle = $"background-color: {StatusColor};";            
         }
 
         private void Pipeline_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            UpdateDisplay();
+
+            InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        }
+
+        protected void UpdateDisplay()
         {
             switch (Stage.Status)
             {
@@ -45,17 +59,6 @@ namespace Jpp.BackgroundPipeline.UI.Razor.Stages
                     StatusColor = "#efa649";
                     break;
             }
-
-            InvokeAsync(() =>
-            {
-                StateHasChanged();
-            });
-        }
-
-        protected void ToggleCollapse()
-        {
-            Expanded = !Expanded;
-            MaxHeight = Expanded ? 450 : 0;
         }
     }
 }

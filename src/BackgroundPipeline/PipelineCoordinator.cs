@@ -45,9 +45,10 @@ namespace Jpp.BackgroundPipeline
 
             var queue = pipelines.Where(p => p.Status == Status.Queued).OrderByDescending(p => p.Priority).ThenByDescending(p => p.RequiredDate).ThenByDescending(p => p.QueuedDate);
 
-            while(queue.Count() < 1)
+            while (queue.Count() < 1)
             {
                 await Task.Delay(MillisecondsDelay);
+                pipelines = await _pipelines.GetAllPipelines();                
                 queue = pipelines.Where(p => p.Status == Status.Queued).OrderByDescending(p => p.Priority).ThenByDescending(p => p.RequiredDate).ThenByDescending(p => p.QueuedDate);
             }
 

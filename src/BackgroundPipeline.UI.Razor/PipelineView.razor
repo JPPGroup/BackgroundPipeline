@@ -2,7 +2,7 @@
 @using Jpp.BackgroundPipeline.Stages
 @using Jpp.BackgroundPipeline.UI.Razor.Stages
 
-<Jpp.Common.Razor.Accordion HeaderStyle="@_headerStyle" MaxHeight="250">
+<Jpp.Common.Razor.Accordion HeaderStyle="@_headerStyle" MaxHeight="600" Expanded="@Expanded">
     <Header>
         <h3 class="pipeline-h3">@Pipeline.Name</h3>
         <h6 class="pipeline-h6">@Pipeline.Status</h6>
@@ -43,18 +43,21 @@
                     case ConfirmationStage t1:
                         <ConfirmationStageView Stage="t1" />
                         break;
+
+                    case AzureBlobUploadStage t1:
+                        <AzureBlobUploadStageView Stage="t1" />
+                        break;
+
+                    default:
+                        <p>Unknown stage. Please contact your administrator.</p>
+                            break;
+
+                    }
                 }
             }
-        }
-    </Content>
+            </Content>
 </Jpp.Common.Razor.Accordion>
 
 @code
 {
-    string _headerStyle;
-
-    protected override async Task OnParametersSetAsync()
-    {
-        _headerStyle = $"background-color: {StatusColor};";
     }
-}

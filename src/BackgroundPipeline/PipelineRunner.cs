@@ -26,7 +26,7 @@ namespace Jpp.BackgroundPipeline
                 {
                     if (pipe.Status == Status.Running)
                     {
-                        await pipe.CurrentStage.Run();
+                        await pipe.CurrentStage.Run(pipe.OutputCache);
                         
                         switch (pipe.CurrentStage.Status)
                         {
@@ -53,7 +53,9 @@ namespace Jpp.BackgroundPipeline
 
         private void AdvanceStage(Pipeline pipe)
         {
-            if(pipe.CurrentStage.NextStageID != Guid.Empty)
+            PersistOutputs(pipe);
+
+            if (pipe.CurrentStage.NextStageID != Guid.Empty)
             {
                 pipe.CurrentStageID = pipe.CurrentStage.NextStageID;
 
@@ -62,7 +64,22 @@ namespace Jpp.BackgroundPipeline
                 pipe.Status = Status.Completed;
             }
 
-            pipe.LastAdvanced = DateTime.Now;
+            pipe.LastAdvanced = DateTime.Now;            
+        }
+
+        private void PersistOutputs(Pipeline pipe)
+        {
+            foreach(KeyValuePair<string, object> pair in pipe.CurrentStage.Output)
+            {
+                if (pipe.OutputCache.ContainsKey(pair.Key))
+                {
+                    pipe.OutputCache[pair.Key] = pair.Value;
+                }
+                else
+                {
+                    pipe.OutputCache.Add(pair.Key, pair.Value);
+                }
+            }
         }
     }
 }
