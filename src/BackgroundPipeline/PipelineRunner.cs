@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -90,8 +91,11 @@ namespace Jpp.BackgroundPipeline
         /// <param name="pipe">Pipeline to act on</param>
         private static void PersistOutputs(Pipeline pipe)
         {
-            foreach((string key, object value) in pipe.CurrentStage.Output)
+            foreach(KeyValuePair<string, object> kvp in pipe.CurrentStage.Output)
             {
+                string key = kvp.Key;
+                object value = kvp.Value;
+
                 if (pipe.OutputCache.ContainsKey(key))
                 {
                     pipe.OutputCache[key] = value;
