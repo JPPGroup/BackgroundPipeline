@@ -1,0 +1,65 @@
+﻿/* Style the button that is used to open and close the collapsible content */
+.collapsible-trigger {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+    .collapsible-trigger:hover {
+        background-color: #ccc;
+    }
+        /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.collapsible-active {
+    /*display: block;    */
+    
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.collapsible-inactive {
+    /*display: none;    */
+    
+}
+
+.collapsible-content {
+    padding: 0 18px;
+    background-color: #f1f1f1;        
+    overflow: auto;
+    transition: max-height 0.5s ease-in;    
+}
+
+.collapsible-child-content {
+    padding: 0 18px;
+    background-color: #d8d8d8;
+    overflow: auto;
+    transition: max-height 0.5s ease-in;
+}
+
+.pipeline-h3 {
+    margin: 0px;    
+}
+
+.pipeline-h6 {  
+    margin: 0px;
+    font-size: 12px;
+}
+
+
+/*https://gedd.ski/post/tile-layouts/*/
+.pipeline-tilegrid {
+    display: grid;
+    grid-column-gap: 40px;
+    grid-row-gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.pipeline-tile {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+    padding: 15px;
+}

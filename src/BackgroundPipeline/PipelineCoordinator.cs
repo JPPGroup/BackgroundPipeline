@@ -16,15 +16,30 @@ namespace Jpp.BackgroundPipeline
         /// </summary>
         public int MillisecondsDelay { get; set; }
 
+        public IReadOnlyCollection<IPipelineFactory> Factories
+        {
+            get { return _factories; }
+        }
+
+        private readonly List<IPipelineFactory> _factories;
         private readonly IPipelineStorage _pipelines;
 
         /// <summary>
         /// Create new pipeline coordinator
         /// </summary>
         /// <param name="storage">Backage storage system for pipeline persistence</param>
-        public PipelineCoordinator(IPipelineStorage storage)
+        public PipelineCoordinator(IPipelineStorage storage, IServiceProvider provider)
         {
             _pipelines = storage;
+            _factories = new List<IPipelineFactory>();
+
+            var factoryTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes())
+                .Where(x => typeof(IPipelineFactory).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract);
+
+            foreach (Type factoryType in factoryTypes)
+            {
+                RegisterFactory((IPipelineFactory)provider.GetService(factoryType));
+            }
 #if DEBUG
             MillisecondsDelay = 10000;
 #else
@@ -86,6 +101,11 @@ namespace Jpp.BackgroundPipeline
 
             Pipeline nextPipeline = queue.First();
             return nextPipeline;
+        }
+
+        private void RegisterFactory(IPipelineFactory factory)
+        {
+            _factories.Add(factory);
         }
     }
 }

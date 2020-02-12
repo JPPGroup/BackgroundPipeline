@@ -1,0 +1,12 @@
+﻿@inherits ConfirmationStageViewBase
+
+<Jpp.Common.Razor.Accordion HeaderStyle="@_headerStyle" MaxHeight="250" Expanded="@(Stage.ID == Stage.Pipeline.CurrentStageID)">
+    <Header>
+        <h3 class="pipeline-h3">@Stage.StageName</h3>
+        <h6 class="pipeline-h6">@Stage.Status</h6>
+    </Header>
+    <Content>        
+        <button @onclick="Confirm">Proceed</button>        
+    </Content>
+</Jpp.Common.Razor.Accordion>
+

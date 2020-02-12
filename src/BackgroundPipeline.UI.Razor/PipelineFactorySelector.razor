@@ -1,0 +1,24 @@
+﻿@inherits PipelineFactorySelectorBase
+
+@{
+    if (_coordinator.Factories.Any())
+    {
+    <div class="pipeline-tilegrid">
+        @{
+            foreach (IPipelineFactory factory in _coordinator.Factories)
+            {
+                <div class="pipeline-tile">
+                    <h3 class="pipeline-h3">@factory.Name</h3>
+                    <p>@factory.Description</p>
+                    <button @onclick="(() => Create(factory))">Create Pipeline</button>
+                </div>
+            }
+        }
+    </div>
+    }
+    else
+    {
+        <p>No pipeline definitions have been loaded. Please contact your administrator.</p>
+    }
+
+}

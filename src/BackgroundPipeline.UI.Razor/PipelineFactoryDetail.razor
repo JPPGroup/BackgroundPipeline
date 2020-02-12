@@ -1,0 +1,47 @@
+﻿@using Jpp.Common.Razor.Services
+<div style="min-height: 250px; width: 600px; display: flex; flex-direction: column; justify-content: space-between;">
+    @{
+        if (CurrentStage == 0)
+        {
+            <div>
+                <p>@Factory.Description</p>
+            </div>
+        }
+    }
+<CascadingValue Value="@CurrentStage">
+    @ChildContent
+</CascadingValue>
+        <div style="margin-right: 0px; margin-left: auto;">
+
+            @{
+                if (CurrentStage != 0)
+                {
+                    <button @onclick="() => CurrentStage--" style="width: 150px">Previous</button>
+                }
+                if (CurrentStage == StageCount)
+                {
+                    <button @onclick="() => Modal.Close(true)" style="width: 150px">Complete</button>
+                }
+                else
+                {
+                    <button @onclick="() => CurrentStage++" style="width: 150px">Next</button>
+                }
+            }    
+    </div>
+</div>
+
+@code {
+    [Inject]
+    public ModalService Modal { get; set; }
+
+    [Parameter]
+    public IPipelineFactory Factory { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public int CurrentStage { get; set; }
+
+    [Parameter]
+    public int StageCount { get; set; }
+}

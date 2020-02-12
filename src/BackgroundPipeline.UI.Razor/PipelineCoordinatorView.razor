@@ -1,0 +1,24 @@
+﻿@inherits PipelineCoordinatorViewBase
+@{
+    if (Pipelines == null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+
+        if (Pipelines.Count() == 0)
+        {
+            <p>No pipelines found.</p>
+        }
+
+        foreach (Pipeline p in Pipelines)
+        {
+            <PipelineView PipelineID="p.ID" />
+            <br />
+        }
+    }
+
+}
+
+

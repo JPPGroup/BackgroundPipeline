@@ -1,0 +1,17 @@
+﻿@inherits FileUploadStageViewBase
+@using Jpp.Common.Razor;
+
+<Jpp.Common.Razor.Accordion HeaderStyle="@_headerStyle" MaxHeight="250" Expanded="@(Stage.ID == Stage.Pipeline.CurrentStageID)">
+    <Header>
+        <h3 class="pipeline-h3">@Stage.StageName</h3>
+        <h6 class="pipeline-h6">@Stage.Status</h6>
+    </Header>
+    <Content>
+        <FileUpload OnUpload="UploadComplete" />
+        <br />        
+        <div hidden="@FileNotReady">
+            <button @onclick="Confirm">Proceed</button>
+        </div>
+    </Content>
+</Jpp.Common.Razor.Accordion>
+

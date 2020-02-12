@@ -1,0 +1,63 @@
+﻿@inherits PipelineViewBase
+@using Jpp.BackgroundPipeline.Stages
+@using Jpp.BackgroundPipeline.UI.Razor.Stages
+
+<Jpp.Common.Razor.Accordion HeaderStyle="@_headerStyle" MaxHeight="600" Expanded="@Expanded">
+    <Header>
+        <h3 class="pipeline-h3">@Pipeline.Name</h3>
+        <h6 class="pipeline-h6">@Pipeline.Status</h6>
+    </Header>
+    <Content>
+        Queued for processing at
+        <b>@(String.Format("{0:HH:MM}", Pipeline.QueuedDate))</b> on
+        <b>@(String.Format("{0:dddd, MMMM d, yyyy}", Pipeline.QueuedDate))</b>
+        <br />
+        @{
+            if (Pipeline.LastAdvanced == default(DateTime))
+            {
+                <text>No stages have completed yet.
+                    <br />
+                </text>
+            }
+            else
+            {
+                <text>Last stage completed at
+                    <b>@(String.Format("{0:HH:MM}", Pipeline.LastAdvanced))</b> on the
+                    <b>@(String.Format("{0:dddd, MMMM d, yyyy}", Pipeline.LastAdvanced))</b>
+                    <br />
+                </text>
+            }
+        }
+        <br />
+        @{
+            foreach (PipelineStage stage in Pipeline.Stages.OrderByDescending(ps => ps.LastRun))
+            {
+                switch (stage)
+                {
+
+
+                    case FileUploadStage t2:
+                        <FileUploadStageView Stage="t2" />
+                        break;
+
+                    case ConfirmationStage t1:
+                        <ConfirmationStageView Stage="t1" />
+                        break;
+
+                    case AzureBlobUploadStage t1:
+                        <AzureBlobUploadStageView Stage="t1" />
+                        break;
+
+                    default:
+                        <p>Unknown stage. Please contact your administrator.</p>
+                            break;
+
+                    }
+                }
+            }
+            </Content>
+</Jpp.Common.Razor.Accordion>
+
+@code
+{
+    }

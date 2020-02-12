@@ -1,0 +1,15 @@
+﻿@if (Step == CurrentStage)
+{
+    @ChildContent
+}
+
+        @code {
+    [Parameter]
+        public int Step { get; set; }
+
+        [CascadingParameter]
+        public int CurrentStage { get; set; }
+
+        [Parameter]
+        public RenderFragment ChildContent { get; set; }
+        }

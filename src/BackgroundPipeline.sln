@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackgroundPipeline.UI.Razor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackgroundPipeline.UI.Razor.Test", "BackgroundPipeline.UI.Razor.Test\BackgroundPipeline.UI.Razor.Test.csproj", "{84355019-7A86-4F25-9030-DD166762830B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundPipeline.Autocad", "BackgroundPipeline.Autocad\BackgroundPipeline.Autocad.csproj", "{F211F181-87A0-44A4-B2B4-140D1AE79780}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Razor", "..\..\Common\src\Common.Razor\Common.Razor.csproj", "{1BEE6BDA-A7EA-4BAA-8F43-4C393C1421E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{84355019-7A86-4F25-9030-DD166762830B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84355019-7A86-4F25-9030-DD166762830B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84355019-7A86-4F25-9030-DD166762830B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F211F181-87A0-44A4-B2B4-140D1AE79780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F211F181-87A0-44A4-B2B4-140D1AE79780}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F211F181-87A0-44A4-B2B4-140D1AE79780}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F211F181-87A0-44A4-B2B4-140D1AE79780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BEE6BDA-A7EA-4BAA-8F43-4C393C1421E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BEE6BDA-A7EA-4BAA-8F43-4C393C1421E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BEE6BDA-A7EA-4BAA-8F43-4C393C1421E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BEE6BDA-A7EA-4BAA-8F43-4C393C1421E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
