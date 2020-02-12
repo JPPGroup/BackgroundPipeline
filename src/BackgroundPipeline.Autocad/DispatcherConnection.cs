@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json;
+using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using RabbitMQ.Client.Events;
 
 namespace BackgroundPipeline.Autocad
@@ -11,16 +12,16 @@ namespace BackgroundPipeline.Autocad
         private EventingBasicConsumer _consumer;
         private Dictionary<Guid, TaskCompletionSource<RemoteTask>> _awaitedResponses;
 
-        public DispatcherConnection(string hostname)
+        public DispatcherConnection(string hostname, string username, string password)
         {
-            EstablishObjects(hostname);
+            EstablishObjects(hostname, username, password);
             _awaitedResponses = new Dictionary<Guid, TaskCompletionSource<RemoteTask>>();
 
             _consumer = new EventingBasicConsumer(_channel);
             _consumer.Received += (model, ea) =>
             {
                 var body = ea.Body;
-                RemoteTask response = JsonSerializer.Deserialize<RemoteTask>(ea.Body);
+                RemoteTask response = JsonConvert.DeserializeObject<RemoteTask>(Encoding.UTF8.GetString(ea.Body));
                 
                 //do something
                 if (_awaitedResponses.ContainsKey(response.Id))
@@ -48,7 +49,7 @@ namespace BackgroundPipeline.Autocad
                     throw new NotImplementedException();
             }
 
-            byte[] data = JsonSerializer.SerializeToUtf8Bytes(remoteTask);
+            byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(remoteTask));
             _properties.CorrelationId = remoteTask.Id.ToString();
 
             _channel.BasicPublish(EXCHANGE_NAME, routingKey, true, _properties, data);

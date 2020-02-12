@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Jpp.Ironstone.Draughter.TaskPayloads;
 
 namespace BackgroundPipeline.Autocad
 {
@@ -9,8 +10,9 @@ namespace BackgroundPipeline.Autocad
         public Guid Id { get; set; }
         public Runtime WorkerRuntime { get; set; }
 
-        public List<File> InputFiles { get; set; }
-        public List<File> OutputFiles { get; set; }
+        public List<ITaskPayload> TaskPayload { get; set; }
+
+        public List<File> WorkingDirectory { get; set; }
 
         public ResponseStatus? ResponseStatus { get; set; } 
     }
@@ -19,12 +21,6 @@ namespace BackgroundPipeline.Autocad
     {
         Autocad,
         Civil3d
-    }
-
-    public struct File
-    {
-        public string Name { get; set; }
-        public byte Data { get; set; }
     }
 
     public enum ResponseStatus

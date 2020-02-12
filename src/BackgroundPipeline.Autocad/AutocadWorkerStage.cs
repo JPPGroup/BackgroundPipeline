@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Jpp.BackgroundPipeline;
+using Jpp.Ironstone.Draughter.TaskPayloads;
 
 namespace BackgroundPipeline.Autocad
 {
@@ -22,7 +23,7 @@ namespace BackgroundPipeline.Autocad
             if (WorkRemoteTask == null)
                 return Status.InputRequired;
 
-            WorkRemoteTask.InputFiles = (List<File>) _inputs["WorkingFiles"];
+            WorkRemoteTask.WorkingDirectory = (List<File>) _inputs["WorkingFiles"];
 
             if (_connection.AutocadWorkQueueLength() > QUEUE_CUTOFF)
                 return Status.Queued; // TODO: Verify this doesnt break anything
@@ -38,7 +39,7 @@ namespace BackgroundPipeline.Autocad
             switch (response.ResponseStatus.Value)
             {
                 case ResponseStatus.OK:
-                    Output["WorkingFiles"] = WorkRemoteTask.OutputFiles;
+                    Output["WorkingFiles"] = WorkRemoteTask.WorkingDirectory;
                     return Status.Completed;
 
                 case ResponseStatus.UnknownTask:

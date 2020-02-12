@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Text.Json;
+using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using RabbitMQ.Client.Events;
 
 namespace BackgroundPipeline.Autocad
@@ -11,9 +12,9 @@ namespace BackgroundPipeline.Autocad
 
         private TaskCompletionSource<RemoteTask> _nextMessage;
 
-        public WorkerConnection(string hostname)
+        public WorkerConnection(string hostname, string username, string password)
         {
-            EstablishObjects(hostname);
+            EstablishObjects(hostname, username, password);
             
             _consumer = new EventingBasicConsumer(_channel);
             _consumer.Received += (model, ea) =>
@@ -23,14 +24,14 @@ namespace BackgroundPipeline.Autocad
                     throw new ArgumentOutOfRangeException();
 
                 var body = ea.Body;
-                RemoteTask response = JsonSerializer.Deserialize<RemoteTask>(ea.Body);
+                RemoteTask response = JsonConvert.DeserializeObject<RemoteTask>(Encoding.UTF8.GetString(ea.Body));
                 _nextMessage.SetResult(response);
             };
         }
 
         public void SendResponse(RemoteTask remoteTask)
         {
-            byte[] data = JsonSerializer.SerializeToUtf8Bytes(remoteTask);
+            byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(remoteTask));
             _properties.CorrelationId = remoteTask.Id.ToString();
 
             _channel.BasicPublish(RESPONSE_EXCHANGE_NAME, "", false, _properties, data);

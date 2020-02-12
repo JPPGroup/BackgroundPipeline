@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Jpp.Common;
+﻿using Jpp.Common;
 using RabbitMQ.Client;
 
 namespace BackgroundPipeline.Autocad
@@ -16,9 +13,9 @@ namespace BackgroundPipeline.Autocad
         protected IModel _channel;
         protected IBasicProperties _properties;
 
-        protected void EstablishObjects(string hostname)
+        protected void EstablishObjects(string hostname, string username, string password)
         {
-            var factory = new ConnectionFactory() {HostName = hostname};
+            var factory = new ConnectionFactory() {HostName = hostname, UserName = "jpp", Password = "jpp"};
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
 
@@ -32,6 +29,7 @@ namespace BackgroundPipeline.Autocad
 
             _properties = _channel.CreateBasicProperties();
             _properties.Persistent = true;
+            _properties.ContentType = "application/json";
 
             _channel.BasicQos(0, 1, false);
         }
