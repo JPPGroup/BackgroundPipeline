@@ -118,6 +118,28 @@ namespace Jpp.BackgroundPipeline
             OutputCache = new Dictionary<string, object>();
         }
 
+        public PipelineStage GetQueuedStage()
+        {
+            var queuedStages = Stages.Where(s => s.Status == Status.Queued);
+            PipelineStage selectedStage = null;
+
+            foreach (PipelineStage queuedStage in queuedStages)
+            {
+                if (!queuedStages.Any(s => s.NextStageID == queuedStage.ID))
+                {
+                    selectedStage = queuedStage;
+                    break;
+                }
+            }
+
+            return selectedStage;
+        }
+
+        public bool StagesComplete()
+        {
+            return Stages.All(s => s.Status != Status.Queued && s.Status != Status.RemoteRunning);
+        }
+
         [NotMapped]
         public Dictionary<string, object> OutputCache { get; set; }
     }
@@ -133,6 +155,7 @@ namespace Jpp.BackgroundPipeline
         Stopped,
         Completed,
         InputRequired,
+        RemoteRunning,
         Error
     }
 

@@ -1,43 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Jpp.BackgroundPipeline;
-using Jpp.Ironstone.Draughter.TaskPayloads;
 
 namespace BackgroundPipeline.Autocad
 {
-    public class AutocadWorkerStage : PipelineStage
+    public class AutocadWorkerStage : RemoteStage
     {
-        public const uint QUEUE_CUTOFF = 5;
+      
+        public AutocadWorkerStage(DispatcherConnection connection) : base(connection)
+        { }
 
-        private DispatcherConnection _connection;
-
-        public RemoteTask WorkRemoteTask { get; set; }
-
-        public AutocadWorkerStage(DispatcherConnection connection)
+        protected async override Task<Status> PrepareRemote()
         {
-            _connection = connection;
+            if (_inputs.ContainsKey("WorkingFiles"))
+                WorkRemoteTask.WorkingDirectory = (List<File>)_inputs["WorkingFiles"];
+
+            return Status.Running;
         }
 
-        protected override async Task<Status> RunPayloadAsync()
+        protected async override Task<Status> RecieveRemote()
         {
-            if (WorkRemoteTask == null)
-                return Status.InputRequired;
-
-            if(_inputs.ContainsKey("WorkingFiles"))
-                WorkRemoteTask.WorkingDirectory = (List<File>) _inputs["WorkingFiles"];
-
-            if (_connection.AutocadWorkQueueLength() > QUEUE_CUTOFF)
-                return Status.Queued; // TODO: Verify this doesnt break anything
-
-            _connection.SendMessage(WorkRemoteTask);
-
-            RemoteTask response = await _connection.GetResponseAsync(WorkRemoteTask.Id);
-
-            //Process task
-            if (!response.ResponseStatus.HasValue)
-                return Status.Error;
-
-            switch (response.ResponseStatus.Value)
+            switch (WorkRemoteTask.ResponseStatus.Value)
             {
                 case ResponseStatus.OK:
                     Output["WorkingFiles"] = WorkRemoteTask.WorkingDirectory;

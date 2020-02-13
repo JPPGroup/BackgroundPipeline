@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Jpp.BackgroundPipeline;
 using Jpp.Ironstone.Draughter.TaskPayloads;
 using Newtonsoft.Json;
 
 namespace BackgroundPipeline.Autocad
 {
-    public class RemoteTask
+    public class RemoteTask : IRemoteTask
     {
         public Guid Id { get; set; }
         public Runtime WorkerRuntime { get; set; }
@@ -47,18 +47,5 @@ namespace BackgroundPipeline.Autocad
         public List<File> WorkingDirectory { get; set; }
 
         public ResponseStatus? ResponseStatus { get; set; } 
-    }
-
-    public enum Runtime
-    {
-        Autocad,
-        Civil3d
-    }
-
-    public enum ResponseStatus
-    {
-        OK,
-        UnknownTask,
-        UnkownFailure
     }
 }

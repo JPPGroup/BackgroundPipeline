@@ -45,6 +45,7 @@ namespace Jpp.BackgroundPipeline
                         switch (pipe.CurrentStage.Status)
                         {
                             case Status.Completed:
+                            case Status.RemoteRunning:
                                 AdvanceStage(pipe);
                                 break;
 
@@ -71,13 +72,15 @@ namespace Jpp.BackgroundPipeline
         /// <param name="pipe">Pipeline to act on</param>
         private static void AdvanceStage(Pipeline pipe)
         {
+            //TODO: Sort this method to allow for branching
+
             PersistOutputs(pipe);
 
-            if (pipe.CurrentStage.NextStageID != Guid.Empty)
+            if (!pipe.StagesComplete())
             {
-                pipe.CurrentStageID = pipe.CurrentStage.NextStageID;
-
-            } else
+                pipe.CurrentStage = pipe.GetQueuedStage();
+            }
+            else
             {
                 pipe.Status = Status.Completed;
             }
