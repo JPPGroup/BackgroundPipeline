@@ -4,7 +4,7 @@ namespace Jpp.BackgroundPipeline
 {
     public interface IPipelineFactory
     {
-        Task<Pipeline> Create();
+        Task<Pipeline> Create(IModal modal);
 
         string Name { get; }
 

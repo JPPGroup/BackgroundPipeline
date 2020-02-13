@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Text;
+﻿using Jpp.Common.Razor.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace Jpp.BackgroundPipeline.UI.Razor
@@ -14,9 +11,12 @@ namespace Jpp.BackgroundPipeline.UI.Razor
         [Inject] 
         private NavigationManager _navigation { get; set; }
 
+        [Inject]
+        private ModalService _modal { get; set; }
+
         protected async void Create(IPipelineFactory factory)
         {
-            Pipeline pipeline = await factory.Create();
+            Pipeline pipeline = await factory.Create(_modal as ModalWrapper);
 
             if (pipeline != null)
             {
