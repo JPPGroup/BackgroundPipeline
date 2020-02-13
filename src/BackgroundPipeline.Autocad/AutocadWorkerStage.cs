@@ -23,7 +23,8 @@ namespace BackgroundPipeline.Autocad
             if (WorkRemoteTask == null)
                 return Status.InputRequired;
 
-            WorkRemoteTask.WorkingDirectory = (List<File>) _inputs["WorkingFiles"];
+            if(_inputs.ContainsKey("WorkingFiles"))
+                WorkRemoteTask.WorkingDirectory = (List<File>) _inputs["WorkingFiles"];
 
             if (_connection.AutocadWorkQueueLength() > QUEUE_CUTOFF)
                 return Status.Queued; // TODO: Verify this doesnt break anything
