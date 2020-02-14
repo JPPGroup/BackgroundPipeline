@@ -14,9 +14,12 @@ namespace Jpp.BackgroundPipeline.UI.Razor
         [Inject]
         private ModalService _modal { get; set; }
 
+        [Inject]
+        private IArtifactPersistence _artifactPersistence { get; set; }
+
         protected async void Create(IPipelineFactory factory)
         {
-            Pipeline pipeline = await factory.Create(_modal as ModalWrapper);
+            Pipeline pipeline = await factory.Create(_modal as ModalWrapper, _artifactPersistence);
 
             if (pipeline != null)
             {

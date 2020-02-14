@@ -1,45 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Jpp.BackgroundPipeline.Stages
+﻿namespace Jpp.BackgroundPipeline.Stages
 {
     public class FileUploadStage : ConfirmationStage
     {
-        public const string FILE_OUTPUT = "UploadedFile";
-        public const string FILENAME = "UploadedFilename";
+        public FileUploadStage(Pipeline parent, string name) : base(parent, name)
+        { }
 
-        [NotMapped]
-        public byte[] Data
+        public void AddFile(string filename, byte[] data)
         {
-            get { return Output[FILE_OUTPUT] as byte[]; }
-            set 
-            {
-                if (Output.ContainsKey(FILE_OUTPUT))
-                {
-                    Output[FILE_OUTPUT] = value;
-                }
-                else
-                {
-                    Output.Add(FILE_OUTPUT, value);
-                }
-                
-            }
-        }
-
-        [NotMapped]
-        public string Filename
-        {
-            get { return Output[FILENAME] as string; }
-            set 
-            {
-                if (Output.ContainsKey(FILENAME))
-                {
-                    Output[FILENAME] = value;
-                }
-                else
-                {
-                    Output.Add(FILENAME, value);
-                }
-            }
+            Pipeline.Artifacts.AddFile(filename, data);
         }
     }
 }

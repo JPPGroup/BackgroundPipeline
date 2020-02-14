@@ -42,5 +42,8 @@ namespace Jpp.BackgroundPipeline.Stages
                 return Status.InputRequired;
             }
         }
+
+        public ConfirmationStage(Pipeline parent, string name) : base(parent, name)
+        { }
     }
 }

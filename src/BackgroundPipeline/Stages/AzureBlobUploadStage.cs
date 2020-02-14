@@ -31,19 +31,21 @@ namespace Jpp.BackgroundPipeline.Stages
         }
         private int _currentChunk;
 
-        private AzureBlobUploadStage()
+        private AzureBlobUploadStage(Pipeline parent, string name) : base(parent, name)
         {
 
         }
 
-        public AzureBlobUploadStage(String azureStorageAccountKey)
+        public AzureBlobUploadStage(String azureStorageAccountKey, Pipeline parent, string name) : this(parent, name)
         {
             AzureStorageAccountKey = azureStorageAccountKey;
         }
 
         protected async override Task<Status> RunPayloadAsync()
         {              
-            CloudStorageAccount storageAccount;
+            // TODO: Rework this to use Artifact storage
+            return Status.Completed;
+            /*CloudStorageAccount storageAccount;
             if (CloudStorageAccount.TryParse(AzureStorageAccountKey, out storageAccount))
             {
                 // Create the CloudBlobClient that represents the 
@@ -106,7 +108,7 @@ namespace Jpp.BackgroundPipeline.Stages
                 }
             }           
 
-            return Status.Completed;
+            return Status.Completed;*/
         }
     }
 }

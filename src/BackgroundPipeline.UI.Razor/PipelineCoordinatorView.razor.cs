@@ -20,7 +20,7 @@ namespace Jpp.BackgroundPipeline.UI.Razor
 
         protected async void AddPipeline()
         {
-            Pipeline p = new Pipeline()
+            /*Pipeline p = new Pipeline()
             {
                 ID = Guid.NewGuid(),
                 Name = "New Pipeline",
@@ -47,7 +47,7 @@ namespace Jpp.BackgroundPipeline.UI.Razor
 
             p.CurrentStageID = cs.ID;     
 
-            await _coordinator.QueuePipelineAsync(p);            
+            await _coordinator.QueuePipelineAsync(p);            */
         }
     }
 }

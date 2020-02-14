@@ -12,7 +12,7 @@ namespace Jpp.BackgroundPipeline
         private IRemoteConnection _connection;
         private bool _responseRecieved { get; set; } = false;
 
-        public RemoteStage(IRemoteConnection connection)
+        public RemoteStage(IRemoteConnection connection, Pipeline parent, string name) : base(parent, name)
         {
             _connection = connection;
         }

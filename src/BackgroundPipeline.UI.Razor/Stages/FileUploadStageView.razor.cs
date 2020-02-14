@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Jpp.Common.Razor;
 
 namespace Jpp.BackgroundPipeline.UI.Razor.Stages
 {
@@ -12,11 +13,10 @@ namespace Jpp.BackgroundPipeline.UI.Razor.Stages
         public bool FileNotReady { get; set; } = true;
 
 
-        public void UploadComplete(byte[] fileData)
+        public void UploadComplete(FileUploadEventArgs args)
         {
             FileNotReady = false;
-            (Stage as FileUploadStage).Data = fileData;
-            (Stage as FileUploadStage).Filename = Guid.NewGuid().ToString();
+            (Stage as FileUploadStage).AddFile(args.Filename, args.Data);
         }
     }
 }

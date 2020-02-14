@@ -110,12 +110,13 @@ namespace Jpp.BackgroundPipeline
 
         public virtual ICollection<PipelineStage> Stages { get; private set; }    
         
-        public Pipeline()
+        public Pipeline(IArtifactPersistence persistence)
         {
             ID = Guid.NewGuid();
             Stages = new List<PipelineStage>();
-            Name = "Default Name";
+            Name = Guid.NewGuid().ToString();
             OutputCache = new Dictionary<string, object>();
+            Artifacts = new Artifacts(ID, persistence);
         }
 
         public PipelineStage GetQueuedStage()
@@ -142,6 +143,8 @@ namespace Jpp.BackgroundPipeline
 
         [NotMapped]
         public Dictionary<string, object> OutputCache { get; set; }
+
+        public Artifacts Artifacts { get; private set; }
     }
 
     /// <summary>

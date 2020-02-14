@@ -1,0 +1,15 @@
+﻿@inherits GenericStageViewBase
+
+<Jpp.Common.Razor.Accordion HeaderStyle="@_headerStyle" MaxHeight="250" Expanded="@(Stage.ID == Stage.Pipeline.CurrentStageID)">
+    <Header>
+        <h3 class="pipeline-h3">@Stage.StageName</h3>
+        <h6 class="pipeline-h6">@Stage.Status</h6>
+    </Header>
+    <Content>
+        <p>Unknown stage @(Stage.GetType().FullName). Please contact your administrator.</p>
+    </Content>
+</Jpp.Common.Razor.Accordion>
+
+@code {
+
+}

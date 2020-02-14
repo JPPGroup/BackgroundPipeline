@@ -7,13 +7,12 @@ namespace BackgroundPipeline.Autocad
     public class AutocadWorkerStage : RemoteStage
     {
       
-        public AutocadWorkerStage(DispatcherConnection connection) : base(connection)
+        public AutocadWorkerStage(DispatcherConnection connection, Pipeline parent, string name) : base(connection, parent, name)
         { }
 
         protected async override Task<Status> PrepareRemote()
         {
-            if (_inputs.ContainsKey("WorkingFiles"))
-                WorkRemoteTask.WorkingDirectory = (List<File>)_inputs["WorkingFiles"];
+            WorkRemoteTask.WorkingDirectory = Pipeline.Artifacts.GetFiles();
 
             return Status.Running;
         }
@@ -23,7 +22,7 @@ namespace BackgroundPipeline.Autocad
             switch (WorkRemoteTask.ResponseStatus.Value)
             {
                 case ResponseStatus.OK:
-                    Output["WorkingFiles"] = WorkRemoteTask.WorkingDirectory;
+                    Pipeline.Artifacts.SetFiles(WorkRemoteTask.WorkingDirectory);
                     return Status.Completed;
 
                 case ResponseStatus.UnknownTask:

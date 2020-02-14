@@ -20,7 +20,7 @@ namespace Jpp.BackgroundPipeline
         /// <summary>
         /// Name of stage
         /// </summary>
-        public string StageName { get; set; }
+        public string StageName { get; private set; }
 
         /// <summary>
         /// Stage status
@@ -35,9 +35,9 @@ namespace Jpp.BackgroundPipeline
         [NotMapped]
         public Dictionary<string, object> Output { get; set; } = new Dictionary<string, object>();
         
-        public Guid PipelineID { get; set; }
+        public Guid PipelineID { get; private set; }
 
-        public virtual Pipeline Pipeline { get; set; }
+        public virtual Pipeline Pipeline { get; private set; }
 
         public Guid NextStageID { get; set; }        
 
@@ -53,5 +53,11 @@ namespace Jpp.BackgroundPipeline
         }
 
         protected abstract Task<Status> RunPayloadAsync();
+
+        public PipelineStage(Pipeline parent, string stageName)
+        {
+            Pipeline = parent;
+            StageName = stageName;
+        }
     }
 }
