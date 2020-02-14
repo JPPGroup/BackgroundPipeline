@@ -8,6 +8,7 @@ namespace BackgroundPipeline.Autocad
         public const string EXCHANGE_NAME = "drafter_work";
         public const string RESPONSE_EXCHANGE_NAME = "drafter_response";
         public const string AUTOCAD_QUEUE = "drafter_work_autocad_v1";
+        public const string RESPONSE_QUEUE = "drafter_response";
 
         protected IConnection _connection;
         protected IModel _channel;
@@ -24,8 +25,8 @@ namespace BackgroundPipeline.Autocad
             _channel.QueueBind(AUTOCAD_QUEUE, EXCHANGE_NAME, "autocad.v1");
 
             _channel.ExchangeDeclare(RESPONSE_EXCHANGE_NAME, "fanout");
-            _channel.QueueDeclare("drafter_response", true, false, false, null);
-            _channel.QueueBind("drafter_response", RESPONSE_EXCHANGE_NAME, "#");
+            _channel.QueueDeclare(RESPONSE_QUEUE, true, false, false, null);
+            _channel.QueueBind(RESPONSE_QUEUE, RESPONSE_EXCHANGE_NAME, "#");
 
             _properties = _channel.CreateBasicProperties();
             _properties.Persistent = true;

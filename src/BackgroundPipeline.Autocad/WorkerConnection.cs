@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace BackgroundPipeline.Autocad
@@ -11,6 +12,9 @@ namespace BackgroundPipeline.Autocad
         private EventingBasicConsumer _consumer;
 
         private TaskCompletionSource<RemoteTask> _nextMessage;
+        private BasicDeliverEventArgs _bufferedMessage;
+
+        private ulong _deliveryTag;
 
         public WorkerConnection(string hostname, string username, string password)
         {
@@ -19,14 +23,28 @@ namespace BackgroundPipeline.Autocad
             _consumer = new EventingBasicConsumer(_channel);
             _consumer.Received += (model, ea) =>
             {
-                // TODO: Consider buffering
-                if(_nextMessage.Task.IsCompleted)
-                    throw new ArgumentOutOfRangeException();
-
-                var body = ea.Body;
-                RemoteTask response = JsonConvert.DeserializeObject<RemoteTask>(Encoding.UTF8.GetString(ea.Body));
-                _nextMessage.SetResult(response);
+                if (_nextMessage != null)
+                {
+                    ProcessMessage(ea);
+                }
+                else
+                {
+                    _bufferedMessage = ea;
+                }
             };
+            _channel.BasicConsume(queue: AUTOCAD_QUEUE, autoAck: false, consumer: _consumer);
+        }
+
+        private void ProcessMessage(BasicDeliverEventArgs ea)
+        {
+            // TODO: Consider buffering
+            if (_nextMessage.Task.IsCompleted)
+                throw new ArgumentOutOfRangeException();
+
+            var body = ea.Body;
+            _deliveryTag = ea.DeliveryTag;
+            RemoteTask response = JsonConvert.DeserializeObject<RemoteTask>(Encoding.UTF8.GetString(ea.Body));
+            _nextMessage.SetResult(response);
         }
 
         public void SendResponse(RemoteTask remoteTask)
@@ -40,8 +58,20 @@ namespace BackgroundPipeline.Autocad
         public async Task<RemoteTask> GetRemoteTask()
         {
             _nextMessage = new TaskCompletionSource<RemoteTask>();
+
+            if (_bufferedMessage != null)
+            {
+                ProcessMessage(_bufferedMessage);
+                _bufferedMessage = null;
+            }
+
             RemoteTask response = await _nextMessage.Task;
             return response;
+        }
+
+        public async Task TaskComplete()
+        {
+            _channel.BasicAck(_deliveryTag, false);
         }
     }
 }

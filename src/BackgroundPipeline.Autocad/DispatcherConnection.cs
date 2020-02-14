@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Jpp.BackgroundPipeline;
 using Newtonsoft.Json;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace BackgroundPipeline.Autocad
@@ -21,19 +22,31 @@ namespace BackgroundPipeline.Autocad
             _consumer = new EventingBasicConsumer(_channel);
             _consumer.Received += (model, ea) =>
             {
-                var body = ea.Body;
-                IRemoteTask response = JsonConvert.DeserializeObject<IRemoteTask>(Encoding.UTF8.GetString(ea.Body));
-                
-                //do something
-                if (_awaitedResponses.ContainsKey(response.Id))
+                try
                 {
-                    _awaitedResponses[response.Id].SetResult(response);
+                    var body = ea.Body;
+                    string jsonResponse = Encoding.UTF8.GetString(ea.Body);
+                    IRemoteTask response = JsonConvert.DeserializeObject<RemoteTask>(jsonResponse);
+
+                    //do something
+                    if (_awaitedResponses.ContainsKey(response.Id))
+                    {
+                        _awaitedResponses[response.Id].SetResult(response);
+                        _channel.BasicAck(ea.DeliveryTag, false);
+                    }
+                    else
+                    {
+                        //throw new NotImplementedException("Unknown message - consider buffering");
+                        // TODO: URGENTLY fix this to handle unknown message properly
+                        _channel.BasicAck(ea.DeliveryTag, false);
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    throw new NotImplementedException("Unknown message - consider buffering");
+                    // TODO: URGENTLY fix this to handle errors
                 }
             };
+            _channel.BasicConsume(queue: RESPONSE_QUEUE, autoAck: false, consumer: _consumer);
         }
 
         public void SendMessage(IRemoteTask remoteTask)
@@ -50,7 +63,8 @@ namespace BackgroundPipeline.Autocad
                     throw new NotImplementedException();
             }
 
-            byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(remoteTask));
+            string jsonData = JsonConvert.SerializeObject(remoteTask);
+            byte[] data = Encoding.UTF8.GetBytes(jsonData);
             _properties.CorrelationId = remoteTask.Id.ToString();
 
             _channel.BasicPublish(EXCHANGE_NAME, routingKey, true, _properties, data);

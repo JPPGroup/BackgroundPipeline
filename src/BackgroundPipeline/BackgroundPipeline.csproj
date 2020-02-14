@@ -13,6 +13,11 @@
     <Product>Background Pipeline</Product>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Jpp.Common" Version="0.3.7" />
     <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.1.1" />

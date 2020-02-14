@@ -28,7 +28,9 @@ namespace BackgroundPipeline.Autocad
             get
             {
                 //Need to serialize every time in case collection has modified members. Not too intensive as this field is rarely used
-                _serializedTaskPayload = JsonConvert.SerializeObject(_taskPayload, _settings);
+                if(_taskPayload != null)
+                  _serializedTaskPayload = JsonConvert.SerializeObject(_taskPayload, _settings);
+                
                 return _serializedTaskPayload;
             }
             set
@@ -46,6 +48,11 @@ namespace BackgroundPipeline.Autocad
 
         public List<File> WorkingDirectory { get; set; }
 
-        public ResponseStatus? ResponseStatus { get; set; } 
+        public ResponseStatus? ResponseStatus { get; set; }
+
+        public RemoteTask()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }
