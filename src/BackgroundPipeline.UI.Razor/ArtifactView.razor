@@ -1,0 +1,65 @@
+﻿@using System.IO
+@using System.IO.Compression
+@using System.Reflection
+@using System.Text
+@using Jpp.Common.Razor.Services
+@using Microsoft.JSInterop
+@{
+    <table>        
+        @foreach (string pipelineArtifact in Pipeline.Artifacts)
+        {
+        <tr>            
+            <td>>@pipelineArtifact</td>
+            <td> <button @onclick="() => downloadFile(pipelineArtifact)" style="margin: 10px;">Download</button> </td>
+        </tr>
+        }
+    </table>
+<div style="padding: 10px;">
+    <button @onclick="() => downloadAll()">Download All</button>
+</div>
+}
+
+@code {
+
+    [Parameter]
+    public Pipeline Pipeline { get; set; }
+
+    [Inject]
+    public IJSRuntime Runtime { get; set; }
+
+    [Inject]
+    public DownloadService DownloadService { get; set; }
+
+    private void downloadFile(string name)
+    {
+        DownloadService.Register(name, Convert.FromBase64String(Convert.ToBase64String(Pipeline.Artifacts[name])));
+
+        Runtime.InvokeAsync<object>("saveAsFile", name);
+    }
+
+    private void downloadAll()
+    {
+        string name = $"{Pipeline.Name}.zip";
+
+        using (var memoryStream = new MemoryStream())
+        {
+            using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+            {
+                foreach (string pipelineArtifact in Pipeline.Artifacts)
+                {
+                    var demoFile = archive.CreateEntry(pipelineArtifact);
+
+                    using (var entryStream = demoFile.Open())
+                    {
+                        entryStream.Write(Pipeline.Artifacts[pipelineArtifact]);
+                    }
+                }
+            }
+
+            DownloadService.Register(name, memoryStream.ToArray());
+
+            Runtime.InvokeAsync<object>("saveAsFile", name);
+        }
+    }
+
+}

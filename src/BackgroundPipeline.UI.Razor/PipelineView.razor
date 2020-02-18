@@ -25,6 +25,9 @@
                     <b>@(String.Format("{0:HH:MM}", Pipeline.LastAdvanced))</b> on the
                     <b>@(String.Format("{0:dddd, MMMM d, yyyy}", Pipeline.LastAdvanced))</b>
                     <br />
+                    <br />
+                    <button @onclick="async () => ArtifactModal()">Artifacts</button>
+                    <br />
                 </text>
             }
         }
@@ -49,13 +52,13 @@
                         break;
 
                     default:
-                        <GenericStageView Stage="stage"/>
-                            break;
+                        <GenericStageView Stage="stage" />
+                        break;
 
-                    }
                 }
             }
-            </Content>
+        }
+    </Content>
 </Jpp.Common.Razor.Accordion>
 
 @code

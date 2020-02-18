@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using Jpp.Common.Razor.Services;
 
 namespace Jpp.BackgroundPipeline.UI.Razor
 {
@@ -10,6 +10,9 @@ namespace Jpp.BackgroundPipeline.UI.Razor
     {
         [Inject]
         protected PipelineCoordinator _coordinator { get; set; }
+
+        [Inject] 
+        protected ModalService _modalService { get; set; }
 
         [Parameter]
         public Guid PipelineID { get; set; }
@@ -68,6 +71,12 @@ namespace Jpp.BackgroundPipeline.UI.Razor
             }
 
             _headerStyle = $"background-color: {StatusColor};";
+        }
+
+        protected async void ArtifactModal()
+        {
+            await _modalService.ShowAsync("Artifacts", typeof(ArtifactView),
+                new KeyValuePair<string, object>("Pipeline", Pipeline));
         }
     }
 }
