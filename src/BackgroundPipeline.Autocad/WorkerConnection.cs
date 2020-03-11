@@ -73,5 +73,10 @@ namespace BackgroundPipeline.Autocad
         {
             _channel.BasicAck(_deliveryTag, false);
         }
+
+        public async Task TaskFailed()
+        {
+            _channel.BasicNack(_deliveryTag, false, false);
+        }
     }
 }
