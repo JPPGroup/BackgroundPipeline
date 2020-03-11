@@ -11,9 +11,15 @@
     <Authors>JPP Consulting</Authors>
     <Company />
     <Product>Background Pipeline</Product>
+    <Platforms>x64</Platforms>
+    <Configurations>Debug;Release;DebugLocal;ReleaseLocal</Configurations>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugLocal|x64'">
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
