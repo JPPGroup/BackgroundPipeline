@@ -6,7 +6,7 @@
     <Configurations>Debug;Release;DebugLocal;ReleaseLocal</Configurations>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
@@ -16,14 +16,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Jpp.Common" Version="0.3.7" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="RabbitMQ.Client" Version="5.1.2" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition=" $(Configuration.Contains('Local')) == false ">
+  </ItemGroup>
+  <ItemGroup Condition=" $(Configuration.Contains('Local')) ">
+    <ProjectReference Include="..\..\..\Common\src\Common\Common.csproj" />
     <ProjectReference Include="..\..\..\ironstone-draughter\Draughter.TaskPayloads\Draughter.TaskPayloads.csproj" />
     <ProjectReference Include="..\BackgroundPipeline\BackgroundPipeline.csproj" />
   </ItemGroup>
-
 </Project>
