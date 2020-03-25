@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
 using Jpp.BackgroundPipeline;
 using Jpp.Ironstone.Draughter.TaskPayloads;
 using Newtonsoft.Json;
@@ -11,7 +13,7 @@ namespace BackgroundPipeline.Autocad
         public Guid Id { get; set; }
         public Runtime WorkerRuntime { get; set; }
 
-        public bool AutoDeserialize { get; set; }
+        public bool AutoDeserialize { get; set; } = true;
 
         [JsonIgnore]
         public List<ITaskPayload> TaskPayload
@@ -37,7 +39,7 @@ namespace BackgroundPipeline.Autocad
             {
                 _serializedTaskPayload = value;
                 if(AutoDeserialize)
-                    _taskPayload = JsonConvert.DeserializeObject<List<ITaskPayload>>(value, _settings);
+                    Deserialize();
             }
         }
 
@@ -53,6 +55,11 @@ namespace BackgroundPipeline.Autocad
         public RemoteTask()
         {
             Id = Guid.NewGuid();
+        }
+
+        public void Deserialize()
+        {
+            _taskPayload = JsonConvert.DeserializeObject<List<ITaskPayload>>(_serializedTaskPayload, _settings);
         }
     }
 }
