@@ -24,7 +24,7 @@
   </ItemGroup>
   <ItemGroup Condition=" $(Configuration.Contains('Local')) ">
     <ProjectReference Include="..\..\..\Common\src\Common\Common.csproj" />
-    <ProjectReference Include="..\..\..\ironstone-draughter\Draughter.TaskPayloads\Draughter.TaskPayloads.csproj" />
+    <ProjectReference Include="..\..\..\IronstoneDrafter\Draughter.TaskPayloads\Draughter.TaskPayloads.csproj" />
     <ProjectReference Include="..\BackgroundPipeline\BackgroundPipeline.csproj" />
   </ItemGroup>
 </Project>
