@@ -32,7 +32,9 @@ namespace Jpp.BackgroundPipeline
                   {
                       WorkRemoteTask = await _connection.GetResponseAsync(WorkRemoteTask.Id);
                       _responseRecieved = true;
+                      //Return queued to all for processing of result
                       this.Status = Status.Queued;
+
                   });
 
                 return Status.RemoteRunning;

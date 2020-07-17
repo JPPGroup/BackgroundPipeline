@@ -51,6 +51,8 @@ namespace Jpp.BackgroundPipeline
                     Name = artifactsKey,
                     Data = _artifacts[artifactsKey]
                 };
+
+                result.Add(f);
             }
 
             return result;

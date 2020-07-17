@@ -1,0 +1,12 @@
+﻿Please review and confirm the below settings:
+<ul>
+    @foreach (string s in Model)
+        {
+            <li>@s</li>
+        }
+    </ul>
+
+@code {
+    [Parameter]
+    public PipelineFactoryConfirmationStepModel Model { get; set; }
+}

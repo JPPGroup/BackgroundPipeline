@@ -1,16 +1,20 @@
 ﻿@using Jpp.Common.Razor.Services
-<div style="min-height: 250px; width: 600px; display: flex; flex-direction: column; justify-content: space-between;">
-    @{
-        if (CurrentStage == 0)
-        {
-            <div>
-                <p>@Factory.Description</p>
-            </div>
+    <div style="min-height: 250px; width: 600px; display: flex; flex-direction: column; justify-content: space-between;">
+        @{
+            if (CurrentStage == 0)
+            {
+                <div>
+                    <p>@Factory.Description</p>
+                </div>
+            }
         }
-    }
-<CascadingValue Value="@CurrentStage">
-    @ChildContent
-</CascadingValue>
+        <CascadingValue Value="@CurrentStage">
+            @ChildContent
+        </CascadingValue>
+        @if (CurrentStage == StageCount + 1)
+        {
+            <PipelineFactoryConfirmationStep Model="ConfirmationStep" />
+        }
         <div style="margin-right: 0px; margin-left: auto;">
 
             @{
@@ -18,17 +22,18 @@
                 {
                     <button @onclick="() => CurrentStage--" style="width: 150px">Previous</button>
                 }
-                if (CurrentStage == StageCount)
+                if (CurrentStage == StageCount + 1)
                 {
+                    ConfirmationStep.Parse();
                     <button @onclick="() => Modal.Close(true)" style="width: 150px">Complete</button>
                 }
                 else
                 {
-                    <button @onclick="() => CurrentStage++" style="width: 150px">Next</button>
+                    <button @onclick="() => CurrentStage++" style="width: 150px" disabled="@NextEnabledProperty">Next</button>
                 }
-            }    
+            }
+        </div>
     </div>
-</div>
 
 @code {
     [Inject]
@@ -44,4 +49,20 @@
 
     [Parameter]
     public int StageCount { get; set; }
+
+    [Parameter]
+    public Func<bool> NextEnabled { get; set; }
+
+    public PipelineFactoryConfirmationStepModel ConfirmationStep { get; set; }
+
+    protected override void OnInitialized()
+    {
+        ConfirmationStep = new PipelineFactoryConfirmationStepModel();
+    }
+
+    public bool NextEnabledProperty
+    {
+        get { return NextEnabled.Invoke(); }
+    }
+
 }

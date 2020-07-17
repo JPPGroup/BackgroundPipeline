@@ -45,7 +45,6 @@ namespace Jpp.BackgroundPipeline
                         switch (pipe.CurrentStage.Status)
                         {
                             case Status.Completed:
-                            case Status.RemoteRunning:
                                 AdvanceStage(pipe);
                                 break;
 
@@ -55,6 +54,14 @@ namespace Jpp.BackgroundPipeline
 
                             case Status.InputRequired:
                                 pipe.Status = Status.InputRequired;
+                                break;
+
+                            case Status.RemoteRunning:
+                                pipe.Status = Status.RemoteRunning;
+                                break;
+
+                            case Status.Queued:
+                                pipe.Status = Status.Queued;
                                 break;
                         }
                     }

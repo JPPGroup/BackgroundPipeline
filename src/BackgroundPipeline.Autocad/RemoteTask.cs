@@ -18,7 +18,13 @@ namespace BackgroundPipeline.Autocad
         [JsonIgnore]
         public List<ITaskPayload> TaskPayload
         {
-            get { return _taskPayload;}
+            get
+            {
+                if(_taskPayload == null && !string.IsNullOrEmpty(_serializedTaskPayload))
+                    _taskPayload = JsonConvert.DeserializeObject<List<ITaskPayload>>(_serializedTaskPayload, _settings);
+
+                return _taskPayload;
+            }
             set
             {
                 _taskPayload = value;
